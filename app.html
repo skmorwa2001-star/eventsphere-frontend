@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: http: https:; connect-src http: https:; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>EventSphere · App</title>
+<link rel="stylesheet" href="css/style.css">
+<meta name="description" content="EventSphere dashboard: create events, manage volunteers and devices, scan tickets and download participant lists.">
+<meta name="theme-color" content="#eef2ff">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%234f46e5'/><stop offset='1' stop-color='%23be185d'/></linearGradient></defs><rect width='32' height='32' rx='8' fill='url(%23g)'/><circle cx='16' cy='16' r='7' fill='none' stroke='white' stroke-width='3'/><circle cx='16' cy='16' r='2.5' fill='white'/></svg>">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<noscript><p style="padding:24px;text-align:center">EventSphere needs JavaScript. Please turn it on and reload this page.</p></noscript>
+<div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+
+<header class="glass" id="hdr">
+  <a class="logo" href="index.html"><span aria-hidden="true">◉</span> EventSphere</a>
+  <button class="chip" id="st" title="Click to change backend URL">● checking…<span class="sr-only"> (backend status, click to change address)</span></button>
+  <nav id="nav" class="hide">
+    <button class="tab nvol on" data-v="events">Events</button>
+    <button class="tab chk hide" data-v="checkin">Check-in</button>
+    <button class="tab org hide" data-v="volunteers">Volunteers</button>
+    <button class="tab org hide" data-v="devices">Devices</button>
+    <button class="tab par hide" data-v="tickets">My Tickets</button>
+  </nav>
+  <span class="chip hide" id="who"></span>
+  <button class="btn ghost sm hide" id="out">Log out</button>
+</header>
+
+<main id="main">
+  <h1 class="sr-only">EventSphere dashboard</h1>
+  <!-- AUTH -->
+  <section id="auth" class="glass auth">
+    <div id="authMain">
+    <span class="icon-tile" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-qr"/></svg></span>
+    <h2 id="authT">Welcome back</h2>
+    <p class="small" style="margin-top:4px">Sign in to discover and manage events.</p>
+    <div class="seg" id="roleSeg"><button data-r="participant" class="on">Participant</button><button data-r="organizer">Organizer</button><button data-r="volunteer">Volunteer</button></div>
+    <div id="nameWrap" class="hide"><label>Full name<input id="aName" placeholder="Jane Doe"></label></div>
+    <label>Email<input id="aEmail" type="email" placeholder="you@example.com"></label>
+    <label>Password<input id="aPass" type="password" placeholder="Min 8 characters"></label>
+    <p id="forgotWrap" class="small hide" style="text-align:right;margin-top:8px"><a href="#" id="forgotBtn" style="color:var(--acc2)">Forgot password?</a></p>
+    <button class="btn" id="authBtn" style="width:100%;margin-top:20px">Log in</button>
+    <p class="small" style="text-align:center;margin-top:14px"><span id="swTxt">No account?</span> <a href="#" id="swBtn" style="color:var(--acc2)">Sign up</a></p>
+    </div>
+
+    <!-- Step 2 of sign-up: enter the emailed code -->
+    <div id="authVerify" class="hide">
+      <h2>Verify your email</h2>
+      <p class="small" style="margin-top:6px">We sent a 6-digit code to <b id="vEmailShow"></b>. It expires in 10 minutes. Check your spam folder too.</p>
+      <label>Verification code<input id="vCode" class="code-input" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••"></label>
+      <button class="btn" id="vBtn" style="width:100%;margin-top:18px">Verify and continue</button>
+      <div class="row" style="justify-content:space-between;margin-top:14px"><button class="btn ghost sm" id="vResend" disabled>Resend code</button><a href="#" id="vBack" class="small" style="align-self:center">Back to log in</a></div>
+    </div>
+
+    <!-- Forgot password -->
+    <div id="authForgot" class="hide">
+      <h2>Reset your password</h2>
+      <p class="small" style="margin-top:6px">Enter your email and we'll send a 6-digit code.</p>
+      <label>Email<input id="fEmail" type="email" placeholder="you@example.com"></label>
+      <button class="btn ghost" id="fSend" style="width:100%;margin-top:14px">Send code</button>
+      <div id="fStep2" class="hide">
+        <label>Code from the email<input id="fCode" class="code-input" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••"></label>
+        <label>New password<input id="fPass" type="password" placeholder="Min 8 characters" autocomplete="new-password"></label>
+        <button class="btn" id="fReset" style="width:100%;margin-top:18px">Set new password</button>
+      </div>
+      <p class="small" style="text-align:center;margin-top:14px"><a href="#" id="fBack" style="color:var(--acc2)">Back to log in</a></p>
+    </div>
+  </section>
+
+  <!-- EVENTS -->
+  <section id="v-events" class="hide">
+    <div class="bar"><h2>Upcoming Events</h2>
+      <div class="row org hide">
+        <div class="seg" id="evFilter" style="margin:0;min-width:190px"><button data-f="all" class="on">All events</button><button data-f="mine">My events</button></div>
+        <button class="btn ghost" id="expAll" title="Download every participant of your events as CSV"><svg class="ic" aria-hidden="true"><use href="#i-download"/></svg> Download participants</button>
+        <button class="btn" id="newEv">+ New Event</button>
+      </div>
+    </div>
+    <div class="summary hide" id="evSummary"></div>
+    <div class="grid" id="evGrid"></div>
+  </section>
+
+  <!-- CHECK-IN -->
+  <section id="v-checkin" class="hide">
+    <div class="glass" style="max-width:480px;margin:0 auto;padding:28px">
+      <h2>Attendee Check-in</h2>
+      <p id="volInfo" class="small hide" style="margin-top:8px"></p><p class="small" style="margin-top:4px">Scan the attendee's QR ticket, or type the ticket code.</p>
+
+      <div id="devBox" class="dev-box hide"></div>
+      <div id="scanArea">
+      <!-- QR scanner -->
+      <div id="scanBox" class="scan-box hide">
+        <video id="scanVideo" playsinline muted></video>
+        <div class="scan-frame"></div>
+      </div>
+      <div class="row" style="margin-top:16px">
+        <button class="btn" id="scanBtn" style="flex:1"><svg class="ic" aria-hidden="true"><use href="#i-camera"/></svg> Start scanner</button>
+        <label class="btn ghost" style="flex:1;margin:0;text-align:center;color:var(--txt)"><svg class="ic" aria-hidden="true"><use href="#i-image"/></svg> Upload QR image
+          <input type="file" id="scanFile" accept="image/*" hidden>
+        </label>
+      </div>
+      <p id="scanHint" class="small" style="margin-top:8px;text-align:center"></p>
+      <canvas id="scanCanvas" class="hide"></canvas>
+
+      <!-- Manual fallback -->
+      <label>Or enter ticket code<input id="ciCode" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"></label>
+      <button class="btn" id="ciBtn" style="width:100%;margin-top:18px">Check in</button>
+      <p id="ciRes" class="ci-res"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- VOLUNTEERS (organizer) -->
+  <section id="v-volunteers" class="hide">
+    <div class="bar"><h2>Volunteers</h2></div>
+    <div class="glass" style="padding:22px;margin-bottom:22px">
+      <h3>Add a volunteer</h3>
+      <p class="small" style="margin-top:4px">Volunteers get their own login and can only check in tickets for the events you give them. They can't edit events or see attendee lists.</p>
+      <div class="vol-form">
+        <label>Name<input id="vName" placeholder="Volunteer name"></label>
+        <label>Email<input id="vEmail" type="email" placeholder="volunteer@example.com"></label>
+        <label>Temporary password<input id="vPass" type="text" autocomplete="off" placeholder="Min 8 characters"></label>
+        <button class="btn" id="volAdd">Add volunteer</button>
+      </div>
+    </div>
+    <div class="grid" id="volGrid"></div>
+  </section>
+
+  <!-- DEVICES (organizer) -->
+  <section id="v-devices" class="hide">
+    <div class="bar"><h2>Check-in devices</h2></div>
+    <div class="glass" style="padding:22px;margin-bottom:22px">
+      <h3>Check-in security</h3>
+      <label class="chk-row"><input type="checkbox" id="setApprove">
+        <span><b>Require approved devices</b><br><span class="small">Every phone or laptop must be registered and approved by you before it can check people in.</span></span></label>
+      <label class="chk-row"><input type="checkbox" id="setNet">
+        <span><b>Only allow check-in from my current network</b><br><span class="small">Devices must be on the same Wi-Fi/network as you are on right now (the venue network).</span></span></label>
+      <p class="small" id="netInfo" style="margin-top:12px"></p>
+    </div>
+    <div class="grid" id="devGrid"></div>
+  </section>
+
+  <!-- TICKETS -->
+  <section id="v-tickets" class="hide">
+    <div class="bar"><h2>My Tickets</h2></div>
+    <div class="grid" id="tkGrid"></div>
+  </section>
+</main>
+
+<!-- Event form modal -->
+<div class="modal" id="mEv"><div class="glass box" role="dialog" aria-modal="true" aria-labelledby="evT">
+  <h2 id="evT">New Event</h2>
+  <label>Title<input id="eTitle" placeholder="e.g. Jaipur Tech Meetup"></label>
+  <label>Description <span class="small">(optional)</span><textarea id="eDesc" rows="3" placeholder="What is this event about?"></textarea></label>
+  <div class="form-grid">
+    <label>Date &amp; time<input id="eDate" type="datetime-local"></label>
+    <label>Capacity<input id="eCap" type="number" min="1" placeholder="e.g. 100"></label>
+  </div>
+  <label>Location<input id="eLoc" placeholder="Venue and city"></label>
+  <h3 class="form-section">Registration form</h3>
+  <p class="small" style="margin-top:4px">Name and email are always asked. Add the information you need from attendees. It is saved with each registration and included in your CSV download.</p>
+  <div class="row" id="fPresets" style="margin:10px 0 2px"></div>
+  <div id="fRows"></div>
+  <label class="chk-row" style="margin-top:18px"><input type="checkbox" id="eVerify">
+    <span><b>Verify attendee emails</b><br><span class="small" id="eVerifyHint">Attendees get a 6-digit code by email and must enter it to register. Stops fake emails.</span></span></label>
+
+  <div class="row modal-actions"><button class="btn ghost close">Cancel</button><button class="btn" id="evSave">Save event</button></div>
+</div></div>
+
+<!-- Register modal -->
+<div class="modal" id="mReg"><div class="glass box" role="dialog" aria-modal="true" aria-labelledby="rT">
+  <h2 id="rT">Register</h2>
+  <label>Name<input id="rName"></label>
+  <label>Email<input id="rEmail" type="email"></label>
+  <div id="rExtra"></div>
+  <div class="row" style="margin-top:20px;justify-content:flex-end"><button class="btn ghost close">Cancel</button><button class="btn" id="rSave">Get ticket</button></div>
+</div></div>
+
+<!-- Ticket modal -->
+<div class="modal" id="mTk"><div class="glass box" role="dialog" aria-modal="true" aria-labelledby="tkT" style="text-align:center">
+  <h2 id="tkT">Your Ticket</h2><p class="small" id="tkSub"></p>
+  <img class="qr" id="tkQr" alt="QR code"><p class="code" id="tkCode"></p>
+  <div class="row" style="justify-content:center;margin-top:18px"><button class="btn" id="tkDl"><svg class="ic" aria-hidden="true"><use href="#i-download"/></svg> Download QR</button><button class="btn ghost close">Close</button></div>
+</div></div>
+
+<!-- Event details modal -->
+<div class="modal" id="mDet"><div class="glass box" role="dialog" aria-modal="true" aria-labelledby="dTitle">
+  <h2 id="dTitle">Event details</h2>
+  <div id="dBody"></div>
+  <div class="row" id="dActions" style="margin-top:20px;justify-content:flex-end"></div>
+</div></div>
+
+<!-- Assign events to a volunteer -->
+<div class="modal" id="mAs"><div class="glass box" role="dialog" aria-modal="true" aria-labelledby="asT">
+  <h2 id="asT">Volunteer access</h2>
+  <p class="small" style="margin-top:4px">Tick the events this volunteer can check tickets in for.</p>
+  <div id="asList"></div>
+  <div class="row" style="margin-top:20px;justify-content:flex-end"><button class="btn ghost close">Cancel</button><button class="btn" id="asSave">Save access</button></div>
+</div></div>
+
+<!-- Manage modal -->
+<div class="modal" id="mMg"><div class="glass box" role="dialog" aria-modal="true" aria-labelledby="mgT" style="max-width:680px">
+  <h2 id="mgT">Event</h2>
+  <div class="stats" id="mgStats"></div>
+  <div style="overflow:auto"><table><thead><tr><th>Name</th><th>Email</th><th>Status</th><th><span class="sr-only">Actions</span></th></tr></thead><tbody id="mgBody"></tbody></table></div>
+  <div class="row" style="margin-top:18px;justify-content:flex-end"><button class="btn ghost" id="mgCsv"><svg class="ic" aria-hidden="true"><use href="#i-download"/></svg> Download CSV</button><button class="btn ghost close">Close</button></div>
+</div></div>
+
+<div id="toast" class="glass" role="status" aria-live="polite"></div>
+
+<!-- jsQR (local copy): QR decoder used when the browser has no BarcodeDetector -->
+<script src="js/jsQR.js"></script>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

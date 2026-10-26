@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: http: https:; connect-src http: https:; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>EventSphere · Home</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/home.css">
+<meta name="description" content="Register for events in seconds with a QR ticket. Organizers publish events, collect the details they need, and check people in with a scanner.">
+<meta name="theme-color" content="#eef2ff">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%234f46e5'/><stop offset='1' stop-color='%23be185d'/></linearGradient></defs><rect width='32' height='32' rx='8' fill='url(%23g)'/><circle cx='16' cy='16' r='7' fill='none' stroke='white' stroke-width='3'/><circle cx='16' cy='16' r='2.5' fill='white'/></svg>">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<noscript><p style="padding:24px;text-align:center">EventSphere needs JavaScript. Please turn it on and reload this page.</p></noscript>
+<div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+
+<!-- Navigation -->
+<header class="glass">
+  <a class="logo" href="index.html"><span aria-hidden="true">◉</span> EventSphere</a>
+  <button class="chip" id="st" title="Click to change backend URL">● checking…<span class="sr-only"> (backend status, click to change address)</span></button>
+  <nav class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#how">How it works</a>
+    <a href="#events">Events</a>
+    <a class="btn sm" href="app.html">Launch App</a>
+  </nav>
+</header>
+
+<main id="main">
+  <!-- Hero -->
+  <section class="hero hero-split">
+    <div class="hero-copy">
+      <span class="chip badge">Events made effortless</span>
+      <h1>Host, join and check in to events <span class="grad">in seconds</span></h1>
+      <p>Organizers publish events and track attendance. Attendees register in a tap and get a QR ticket, with no account needed.</p>
+      <div class="row cta">
+        <a class="btn lg" href="app.html">Get started</a>
+        <a class="btn lg ghost" href="#events">Register for an event</a>
+      </div>
+      <div class="stat-strip">
+        <div class="stat glass"><b id="statEvents">…</b><span class="small">Live events</span></div>
+        <div class="stat glass"><b id="statSeats">…</b><span class="small">Total seats</span></div>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="ticket glass">
+        <div class="ticket-top"><span class="date-tile"><span>NOV</span><b>14</b></span>
+          <div><strong>Jaipur Tech Meetup</strong><small>6:00 PM · C-Scheme, Jaipur</small></div></div>
+        <div class="ticket-qr"><svg viewBox="-1 -1 23 23" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><path fill="#1e1b3a" d="M0 0h1v1h-1zM1 0h1v1h-1zM2 0h1v1h-1zM3 0h1v1h-1zM4 0h1v1h-1zM5 0h1v1h-1zM6 0h1v1h-1zM8 0h1v1h-1zM9 0h1v1h-1zM11 0h1v1h-1zM14 0h1v1h-1zM15 0h1v1h-1zM16 0h1v1h-1zM17 0h1v1h-1zM18 0h1v1h-1zM19 0h1v1h-1zM20 0h1v1h-1zM0 1h1v1h-1zM6 1h1v1h-1zM8 1h1v1h-1zM9 1h1v1h-1zM11 1h1v1h-1zM12 1h1v1h-1zM14 1h1v1h-1zM20 1h1v1h-1zM0 2h1v1h-1zM2 2h1v1h-1zM3 2h1v1h-1zM4 2h1v1h-1zM6 2h1v1h-1zM8 2h1v1h-1zM9 2h1v1h-1zM10 2h1v1h-1zM12 2h1v1h-1zM14 2h1v1h-1zM16 2h1v1h-1zM17 2h1v1h-1zM18 2h1v1h-1zM20 2h1v1h-1zM0 3h1v1h-1zM2 3h1v1h-1zM3 3h1v1h-1zM4 3h1v1h-1zM6 3h1v1h-1zM8 3h1v1h-1zM12 3h1v1h-1zM14 3h1v1h-1zM16 3h1v1h-1zM17 3h1v1h-1zM18 3h1v1h-1zM20 3h1v1h-1zM0 4h1v1h-1zM2 4h1v1h-1zM3 4h1v1h-1zM4 4h1v1h-1zM6 4h1v1h-1zM9 4h1v1h-1zM11 4h1v1h-1zM12 4h1v1h-1zM14 4h1v1h-1zM16 4h1v1h-1zM17 4h1v1h-1zM18 4h1v1h-1zM20 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM9 5h1v1h-1zM11 5h1v1h-1zM14 5h1v1h-1zM20 5h1v1h-1zM0 6h1v1h-1zM1 6h1v1h-1zM2 6h1v1h-1zM3 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM6 6h1v1h-1zM9 6h1v1h-1zM11 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM15 6h1v1h-1zM16 6h1v1h-1zM17 6h1v1h-1zM18 6h1v1h-1zM19 6h1v1h-1zM20 6h1v1h-1zM8 7h1v1h-1zM10 7h1v1h-1zM11 7h1v1h-1zM0 8h1v1h-1zM1 8h1v1h-1zM4 8h1v1h-1zM9 8h1v1h-1zM11 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h1v1h-1zM0 9h1v1h-1zM4 9h1v1h-1zM7 9h1v1h-1zM9 9h1v1h-1zM14 9h1v1h-1zM15 9h1v1h-1zM17 9h1v1h-1zM18 9h1v1h-1zM19 9h1v1h-1zM20 9h1v1h-1zM0 10h1v1h-1zM2 10h1v1h-1zM3 10h1v1h-1zM4 10h1v1h-1zM6 10h1v1h-1zM7 10h1v1h-1zM12 10h1v1h-1zM13 10h1v1h-1zM14 10h1v1h-1zM17 10h1v1h-1zM18 10h1v1h-1zM19 10h1v1h-1zM20 10h1v1h-1zM2 11h1v1h-1zM3 11h1v1h-1zM4 11h1v1h-1zM5 11h1v1h-1zM12 11h1v1h-1zM17 11h1v1h-1zM18 11h1v1h-1zM19 11h1v1h-1zM0 12h1v1h-1zM1 12h1v1h-1zM2 12h1v1h-1zM3 12h1v1h-1zM4 12h1v1h-1zM5 12h1v1h-1zM6 12h1v1h-1zM7 12h1v1h-1zM8 12h1v1h-1zM9 12h1v1h-1zM10 12h1v1h-1zM13 12h1v1h-1zM14 12h1v1h-1zM15 12h1v1h-1zM16 12h1v1h-1zM17 12h1v1h-1zM20 12h1v1h-1zM9 13h1v1h-1zM10 13h1v1h-1zM11 13h1v1h-1zM12 13h1v1h-1zM14 13h1v1h-1zM15 13h1v1h-1zM18 13h1v1h-1zM20 13h1v1h-1zM0 14h1v1h-1zM1 14h1v1h-1zM2 14h1v1h-1zM3 14h1v1h-1zM4 14h1v1h-1zM5 14h1v1h-1zM6 14h1v1h-1zM12 14h1v1h-1zM13 14h1v1h-1zM14 14h1v1h-1zM18 14h1v1h-1zM19 14h1v1h-1zM0 15h1v1h-1zM6 15h1v1h-1zM13 15h1v1h-1zM15 15h1v1h-1zM16 15h1v1h-1zM17 15h1v1h-1zM18 15h1v1h-1zM19 15h1v1h-1zM0 16h1v1h-1zM2 16h1v1h-1zM3 16h1v1h-1zM4 16h1v1h-1zM6 16h1v1h-1zM9 16h1v1h-1zM13 16h1v1h-1zM14 16h1v1h-1zM15 16h1v1h-1zM16 16h1v1h-1zM17 16h1v1h-1zM0 17h1v1h-1zM2 17h1v1h-1zM3 17h1v1h-1zM4 17h1v1h-1zM6 17h1v1h-1zM8 17h1v1h-1zM11 17h1v1h-1zM16 17h1v1h-1zM17 17h1v1h-1zM19 17h1v1h-1zM0 18h1v1h-1zM2 18h1v1h-1zM3 18h1v1h-1zM4 18h1v1h-1zM6 18h1v1h-1zM9 18h1v1h-1zM10 18h1v1h-1zM13 18h1v1h-1zM14 18h1v1h-1zM15 18h1v1h-1zM18 18h1v1h-1zM0 19h1v1h-1zM6 19h1v1h-1zM9 19h1v1h-1zM11 19h1v1h-1zM12 19h1v1h-1zM17 19h1v1h-1zM20 19h1v1h-1zM0 20h1v1h-1zM1 20h1v1h-1zM2 20h1v1h-1zM3 20h1v1h-1zM4 20h1v1h-1zM5 20h1v1h-1zM6 20h1v1h-1zM8 20h1v1h-1zM9 20h1v1h-1zM10 20h1v1h-1zM12 20h1v1h-1zM13 20h1v1h-1zM14 20h1v1h-1zM16 20h1v1h-1zM17 20h1v1h-1zM20 20h1v1h-1z"/></svg></div>
+        <div class="ticket-foot"><span>Admit one</span><span class="tag ok">Ready to scan</span></div>
+      </div>
+      <div class="float-chip glass c1"><svg class="ic"><use href="#i-check"/></svg> Checked in · Riya S.</div>
+      <div class="float-chip glass c2"><svg class="ic"><use href="#i-users"/></svg> 38 registered</div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="section" id="features">
+    <h2>Everything you need</h2><p class="sub">One simple platform for both sides of an event.</p>
+    <div class="features">
+      <article class="glass card"><span class="icon-tile"><svg class="ic" aria-hidden="true"><use href="#i-cal"/></svg></span><h3>Create events</h3><p>Publish an event with date, venue and capacity. Choose exactly what details to collect from attendees.</p></article>
+      <article class="glass card"><span class="icon-tile"><svg class="ic" aria-hidden="true"><use href="#i-qr"/></svg></span><h3>QR tickets</h3><p>Every registration gets a unique ticket and QR code the moment they sign up.</p></article>
+      <article class="glass card"><span class="icon-tile"><svg class="ic" aria-hidden="true"><use href="#i-shield"/></svg></span><h3>Fast, safe check-in</h3><p>Scan at the door with volunteers on approved devices. Each ticket works once.</p></article>
+      <article class="glass card"><span class="icon-tile"><svg class="ic" aria-hidden="true"><use href="#i-chart"/></svg></span><h3>Live analytics</h3><p>See registrations, check-ins and seats left, and download the list as CSV.</p></article>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="section" id="how">
+    <h2>How it works</h2><p class="sub">Three steps from idea to full house.</p>
+    <div class="steps">
+      <article class="glass card"><span class="step-n">1</span><h3>Sign up</h3><p>Choose organizer or participant and create your account.</p></article>
+      <article class="glass card"><span class="step-n">2</span><h3>Create or register</h3><p>Organizers add events; participants register and receive a QR ticket.</p></article>
+      <article class="glass card"><span class="step-n">3</span><h3>Check in</h3><p>At the door, organizers verify tickets and watch attendance update live.</p></article>
+    </div>
+  </section>
+
+  <!-- Live events from the API -->
+  <section class="section" id="events">
+    <h2>Upcoming events</h2><p class="sub">Pick an event and register in seconds. No account needed.</p>
+    <div class="grid" id="liveEvents"><div class="empty">Loading…</div></div>
+    <div style="text-align:center;margin-top:22px"><button class="btn ghost hide" id="showAll">Show all events</button></div>
+  </section>
+
+  <section class="glass final">
+    <h2>Ready to get started?</h2>
+    <p>Create your free account and run your first event today.</p>
+    <a class="btn lg" href="app.html">Launch EventSphere</a>
+  </section>
+</main>
+
+<footer>© EventSphere · Built with FastAPI</footer>
+<div id="toast" class="glass" role="status" aria-live="polite"></div>
+
+<!-- Registration modal (no login needed) -->
+<div class="modal" id="mReg"><div class="glass box" role="dialog" aria-modal="true" aria-labelledby="rT">
+  <h2 id="rT">Register</h2>
+  <p class="small" style="margin-top:4px">No account needed. Fill in your details to get a QR ticket.</p>
+  <label>Full name *<input id="rName" maxlength="100" autocomplete="name" placeholder="Your name"></label>
+  <label>Email *<input id="rEmail" type="email" autocomplete="email" placeholder="you@example.com"></label>
+  <div id="rCodeWrap" class="hide">
+    <div class="row" style="flex-wrap:nowrap;align-items:flex-end">
+      <label style="flex:1;margin-top:14px">Verification code *<input id="rCode" class="code-input" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••"></label>
+      <button type="button" class="btn ghost" id="rSend" style="margin-bottom:2px;white-space:nowrap">Send code</button>
+    </div>
+    <p class="small" id="rCodeHint" style="margin-top:6px">The organizer wants to confirm your email. Tap "Send code", then enter the 6-digit code we email you.</p>
+  </div>
+  <div id="rExtra"></div>
+  <p class="privacy-note">🔒 Your details are shared only with the event organizer.</p>
+  <div class="row" style="margin-top:18px;justify-content:flex-end"><button class="btn ghost close">Cancel</button><button class="btn" id="rSave">Get my ticket</button></div>
+</div></div>
+
+<!-- Ticket modal -->
+<div class="modal" id="mTk"><div class="glass box" role="dialog" aria-modal="true" aria-labelledby="tkT" style="text-align:center">
+  <h2 id="tkT">You're registered! 🎉</h2><p class="small" id="tkSub"></p>
+  <img class="qr" id="tkQr" alt="Your QR ticket"><p class="code" id="tkCode"></p>
+  <p class="small" style="margin-top:10px"><b>Save this QR code.</b> You will show it at the entrance, and it can only be used once.</p>
+  <div class="row" style="justify-content:center;margin-top:16px"><button class="btn" id="tkDl"><svg class="ic" aria-hidden="true"><use href="#i-download"/></svg> Download QR</button><button class="btn ghost close">Close</button></div>
+</div></div>
+
+<!-- Event details modal (filled by home.js) -->
+<div class="modal" id="mDet"><div class="glass box" role="dialog" aria-modal="true" aria-labelledby="dTitle">
+  <h2 id="dTitle">Event details</h2>
+  <div id="dBody"></div>
+  <div class="row" id="dActions" style="margin-top:20px;justify-content:flex-end"></div>
+</div></div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/home.js"></script>
+</body>
+</html>
