@@ -133,6 +133,13 @@ const ICONS={
   stop:'<rect x="6" y="6" width="12" height="12" rx="2"/>',
   download:'<path d="M12 3v12M7 10l5 5 5-5M4 21h16"/>',
   key:'<circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.7 12.3L21 2M16 7l3 3M14 9l2 2"/>',
+  phone:'<path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .4 1.9.7 2.8a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.3-1.3a2 2 0 012.1-.4c.9.3 1.8.6 2.8.7a2 2 0 011.7 2z"/>',
+  clock:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+  instagram:'<rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/>',
+  linkedin:'<path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>',
+  twitter:'<path d="M4 4l16 16M20 4L4 20"/>',
+  youtube:'<path d="M22.5 6.4a2.8 2.8 0 00-1.9-2C18.9 4 12 4 12 4s-6.9 0-8.6.4a2.8 2.8 0 00-1.9 2A29 29 0 001 11.8a29 29 0 00.5 5.3 2.8 2.8 0 001.9 2c1.7.4 8.6.4 8.6.4s6.9 0 8.6-.4a2.8 2.8 0 001.9-2 29 29 0 00.5-5.3 29 29 0 00-.5-5.4z"/><path d="M9.8 15l5.7-3.2-5.7-3.2z"/>',
+  github:'<path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 00-.9-2.6c3.1-.4 6.4-1.5 6.4-7A5.4 5.4 0 0020 4.8 5.1 5.1 0 0019.9 1S18.7.7 16 2.5a13.4 13.4 0 00-7 0C6.3.7 5.1 1 5.1 1A5.1 5.1 0 005 4.8a5.4 5.4 0 00-1.5 3.8c0 5.4 3.3 6.6 6.4 7A3.4 3.4 0 009 18.1V22"/>',
   mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
 };
 document.body.insertAdjacentHTML("afterbegin",`<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">${Object.entries(ICONS).map(([n,p])=>`<symbol id="i-${n}" viewBox="0 0 24 24">${p}</symbol>`).join("")}</svg>`);
@@ -196,3 +203,37 @@ const emptyState=(icon,title,text,action="")=>
     else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
   });
 })();
+
+/* ---------- site footer: About + Contact, text comes from js/config.js ---------- */
+function renderFooter(){
+  const el=$("#siteFooter");if(!el)return;
+  const site=window.EVENTSPHERE_SITE||{},c=site.contact||{},s=site.social||{},brand=esc(site.brand||"EventSphere");
+  const email=/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(c.email||"")?c.email:"";
+  const phone=(c.phone||"").replace(/[^\d+]/g,"");
+  const webUrl=u=>{try{const x=new URL(u);return x.protocol==="https:"||x.protocol==="http:"?x.href:""}catch{return ""}};  // never javascript: or data: links
+  const row=(icon,label,inner)=>`<li>${ic(icon)}<span><span class="sr-only">${label}: </span>${inner}</span></li>`;
+  const contact=[
+    email&&row("mail","Email",`<a href="mailto:${esc(email)}">${esc(email)}</a>`),
+    phone.length>=6&&row("phone","Phone",`<a href="tel:${esc(phone)}">${esc(c.phone)}</a>`),
+    c.address&&row("pin","Address",esc(c.address)),
+    c.hours&&row("clock","Hours",esc(c.hours)),
+  ].filter(Boolean).join("");
+  const networks={instagram:"Instagram",linkedin:"LinkedIn",twitter:"X (Twitter)",youtube:"YouTube",github:"GitHub"};
+  const social=Object.entries(networks).map(([key,name])=>{
+    const url=webUrl(s[key]);
+    return url?`<a class="social" href="${esc(url)}" target="_blank" rel="noopener noreferrer" aria-label="${name} (opens in a new tab)">${ic(key)}</a>`:"";
+  }).join("");
+  el.innerHTML=`<div class="f-grid">
+    <div class="f-about"><a class="logo" href="index.html"><span aria-hidden="true">◉</span> ${brand}</a>
+      ${site.tagline?`<p class="f-tag">${esc(site.tagline)}</p>`:""}
+      ${site.about?`<p>${esc(site.about)}</p>`:""}
+      ${social?`<div class="socials">${social}</div>`:""}</div>
+    <nav aria-label="Footer"><h2 class="f-title">Explore</h2><ul class="f-links">
+      <li><a href="index.html#features">Features</a></li><li><a href="index.html#how">How it works</a></li>
+      <li><a href="index.html#events">Upcoming events</a></li><li><a href="app.html">Log in / Sign up</a></li></ul></nav>
+    ${contact?`<div><h2 class="f-title">Contact</h2><ul class="f-contact">${contact}</ul></div>`:""}
+  </div>
+  <div class="f-bottom"><span>© ${new Date().getFullYear()} ${brand}. All rights reserved.</span>
+    <span>Details you give when registering are shared only with the event organizer.</span></div>`;
+}
+renderFooter();
